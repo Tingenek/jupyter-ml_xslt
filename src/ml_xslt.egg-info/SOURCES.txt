@@ -1,0 +1,12 @@
+LICENSE
+README.md
+setup.py
+src/ml_xslt/__init__.py
+src/ml_xslt/connection.py
+src/ml_xslt/magic.py
+src/ml_xslt.egg-info/PKG-INFO
+src/ml_xslt.egg-info/SOURCES.txt
+src/ml_xslt.egg-info/dependency_links.txt
+src/ml_xslt.egg-info/not-zip-safe
+src/ml_xslt.egg-info/requires.txt
+src/ml_xslt.egg-info/top_level.txt

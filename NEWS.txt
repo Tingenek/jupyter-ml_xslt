@@ -1,0 +1,13 @@
+.. ML XSLT - a Jupyter Magic to run MarkLogic XSLT statements.
+.. Mark Lawson (@tingenek) for llamas everywhere.
+
+News
+====
+
+0.1
+---
+
+*Release date: 01-Mar-2025*
+
+* First working version
+* XQuery only
