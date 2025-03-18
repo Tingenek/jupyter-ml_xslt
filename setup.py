@@ -11,7 +11,9 @@ version = '0.1'
 install_requires = [
     # List your project dependencies here.
     "requests",
-    "requests_toolbelt"
+    "requests_toolbelt",
+    "lxml",
+    "beautifulsoup4"
 ]
 
 setup(name='ml_xslt',

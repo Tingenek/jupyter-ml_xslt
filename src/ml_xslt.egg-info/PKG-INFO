@@ -9,6 +9,8 @@ Keywords: marklogic magic xslt
 License-File: LICENSE
 Requires-Dist: requests
 Requires-Dist: requests_toolbelt
+Requires-Dist: lxml
+Requires-Dist: beautifulsoup4
 Dynamic: author
 Dynamic: author-email
 Dynamic: description
@@ -41,7 +43,7 @@ The magic needs a connection string to a working MarkLogic endpoint along with u
 
 In a cell as the first line put the magic, for example:
 %%ml_xslt http[s]://admin:admin@localhost:8000  
-The rest of the cell contains the xslt query, exactly as it would look in Query Console. Note it must finish with op:result()
+The rest of the cell contains the xslt transform.
 
 #### Connections and Output
 
@@ -57,11 +59,12 @@ In the case of XQuery and Javascript, the xslt library import will get inserted 
 
 #### Example
 
-List all TDEs using the standard port using xquery as parser and default var.
+Concat author elements, from uri books2 and output to var tx1.
 ```
-%%ml_xslt http://admin:admin@localhost:8000 -p xquery
-op:from-view("sys", "sys_tables",'')
-  => op:result()
+%%ml_xslt http://admin:admin@192.168.1.180:8000 -f /books/books2.xml -v tx1
+<xsl:template match="*:author">
+    <author><xsl:value-of select="concat(*:last,*:first)"/> </author>
+</xsl:template>
 ```
 
 

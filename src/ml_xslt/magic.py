@@ -22,20 +22,30 @@ class MarkLogicXsltMagic(Magics):
         # You must call the parent constructor
         super(MarkLogicXsltMagic, self).__init__(shell)
         self.connection = MLRESTConnection()
-        self.variable = 'ml_xslt'
+        self.variable = 'ml_xslt_out'
         self.parser = 'xquery'
         self.file = None
         self.mode = 'server'
+        self.src = 'ml_xslt_src'
+        self.base = None
 
     @magic_arguments()
     @cell_magic
     @argument(
         '-v', '--variable',default=None,
-        help='output to a var, default is ml_xslt'
+        help='output to a var, default is ml_xslt_out'
+    )
+    @argument(
+        '-s', '--src',default=None,
+        help='stores transform to var, default is ml_xslt_src'
     )
     @argument(
         '-f', '--file',default=None,
         help='document to transform'
+    )
+    @argument(
+        '-b', '--base',default=None,
+        help='transform to run under this, default is None'
     )
     @argument(
         '-m', '--mode',default='local',
@@ -66,6 +76,16 @@ class MarkLogicXsltMagic(Magics):
         else:
             args.mode = self.mode
 
+        if args.src is not None:
+            self.src = args.src
+        else:
+            args.src = self.src
+
+        if args.base is not None:
+            self.base = args.base
+        else:
+            self.base = None
+
         result = None
         if cell is None:
             print("No contents")
@@ -86,6 +106,7 @@ class MarkLogicXsltMagic(Magics):
             else:
                 print('No results')
             self.shell.user_ns.update({args.variable: result})
+            self.shell.user_ns.update({args.src: cell})
 
 def load_ipython_extension(ipython, *args):
     ipython.register_magics(MarkLogicXsltMagic)
