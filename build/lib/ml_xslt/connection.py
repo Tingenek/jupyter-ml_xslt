@@ -29,7 +29,8 @@ class MLRESTConnection(object):
                             xmlns:utils="urn:util-lib"
                             xmlns:map="http://marklogic.com/xdmp/map"
                             extension-element-prefixes="xdmp"
-                            version="3.0">  
+                            version="3.0"> 
+           <xsl:output method="xml" indent="yes" omit-xml-declaration="yes"/>                
             <!-- Import main converter -->
             $BASE$
             <xsl:param name="context" as="map:map?"/>
