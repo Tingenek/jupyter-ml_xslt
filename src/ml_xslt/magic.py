@@ -48,8 +48,8 @@ class MarkLogicXsltMagic(Magics):
         help='transform to run under this, default is None'
     )
     @argument(
-        '-m', '--mode',default='local',
-        help='path to file: local or server. Default is local'
+        '-m', '--mode',default=None,
+        help='path to file: local or server. Assumes server if unset'
     )
     @argument(
         'connection', default=None,nargs='?',
@@ -101,7 +101,7 @@ class MarkLogicXsltMagic(Magics):
             #except Exception as err:
             #    print(f'Other error: {err}')  # Python 3.6
             if result is not None:
-                print(args.variable + ' returns:')
+                print(f"{args.mode} {args.file} returned in {args.variable}")
                 display(result)
             else:
                 print('No results')
