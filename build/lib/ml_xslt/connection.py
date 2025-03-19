@@ -40,24 +40,31 @@ class MLRESTConnection(object):
                 <xsl:apply-templates/>   
             </xsl:template>
             $TRANSFORM$
-            <xsl:template match="@* | node()">
-                <xsl:copy>            
-                    <xsl:apply-templates select="@* | node()"/>
-                </xsl:copy>
-            </xsl:template>
+            $DEFAULT$
             </xsl:stylesheet>,
             $DOCUMENT$)
         '''
+        #If we have a base, we don't need a default transform as it will have one (we hope)
         if (args.base):
             import_string = f'<xsl:import href="{args.base}"/>'
+            default_string = ""
         else:
             import_string = ""
-      
+            default_string = '''<xsl:template match="@* | node()">
+                                <xsl:copy>            
+                                    <xsl:apply-templates select="@* | node()"/>
+                                </xsl:copy>
+                                </xsl:template>
+                              '''
         if (args.file):
-            document = f'doc("{args.file}")'
+            if (args.mode == 'local'):
+                with open('books.xml', "r") as f:
+                     document = "document{" + f.read() + "}"
+            else:    
+                document = f'doc("{args.file}")'
         else:    
             document = '''document{<hello><world>hello world</world></hello>}'''
-        transform = template.replace('$TRANSFORM$',code).replace('$DOCUMENT$', document).replace('$BASE$', import_string)  
+        transform = template.replace('$TRANSFORM$',code).replace('$DOCUMENT$', document).replace('$BASE$', import_string).replace('$DEFAULT$', default_string)   
         payload = {"xquery": transform}
         uri = '%s://%s:%s/v1/eval' % (self.cfg.scheme, self.cfg.host, self.cfg.port)
         #print(transform)
@@ -67,8 +74,8 @@ class MLRESTConnection(object):
             # If the response was successful, no Exception will be raised
             result.raise_for_status()
         except HTTPError as http_err:
-            error = result.json()["errorResponse"]["message"]
-            print(error)
+            #error = result.json()
+            print(result.status_code)
         except Exception as err:
             print(f'Other error occurred: {err}')  # Python 3.6
         else:
@@ -84,7 +91,7 @@ class MLRESTConnection(object):
         if len(out) == 1:
             return out[0]
         else:
-            return  
+            return out
        
     def endpoint(self,line):
         try:
