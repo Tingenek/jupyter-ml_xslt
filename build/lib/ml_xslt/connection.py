@@ -58,7 +58,7 @@ class MLRESTConnection(object):
                               '''
         if (args.file):
             if (args.mode == 'local'):
-                with open('books.xml', "r") as f:
+                with open(args.file, "r") as f:
                      document = "document{" + f.read() + "}"
             else:    
                 document = f'doc("{args.file}")'
