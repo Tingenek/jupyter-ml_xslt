@@ -8,6 +8,8 @@ import requests
 from requests.auth import HTTPDigestAuth
 from requests_toolbelt.multipart import decoder
 from IPython.core.display import display
+from IPython.display import Code
+from lxml import etree
 
 from .connection import MLRESTConnection
 
@@ -102,7 +104,11 @@ class MarkLogicXsltMagic(Magics):
             #    print(f'Other error: {err}')  # Python 3.6
             if result is not None:
                 print(f"{args.mode} {args.file} returned in {args.variable}")
-                display(result)
+                if isinstance(result, etree._Element):
+                    content = etree.tostring(result, encoding='utf8').decode("utf-8")
+                    display(Code(content, language='xml'))
+                else:
+                    display(result)
             else:
                 print('No results')
             self.shell.user_ns.update({args.variable: result})

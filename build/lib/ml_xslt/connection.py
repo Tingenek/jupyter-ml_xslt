@@ -2,8 +2,9 @@ import requests
 from requests.auth import HTTPDigestAuth
 from requests.exceptions import HTTPError
 from requests_toolbelt.multipart import decoder
-from bs4 import BeautifulSoup 
+from lxml import etree
 from io import StringIO
+
 # ----------------------------------------------------------------------
 
 class ConfigStruct:
@@ -86,8 +87,7 @@ class MLRESTConnection(object):
                     for part in multipart_data.parts:
                         ctype = part.headers[b'Content-Type'].decode("utf-8")
                         content = part.content.decode("utf-8")
-                        
-                        data = BeautifulSoup(content, 'xml') if (ctype == 'application/xml') else content
+                        data = etree.fromstring(part.content) if (ctype == 'application/xml') else content
                         out.append(data)
         if len(out) == 1:
             return out[0]

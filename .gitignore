@@ -6,3 +6,5 @@ sample_ext.py
 /.ipynb_checkpoints
 /build
 /src/ml_xslt.egg-info
+src/ml_xslt.egg-info/PKG-INFO
+src/ml_xslt.egg-info/PKG-INFO
