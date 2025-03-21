@@ -5,3 +5,4 @@ sample_ext.py
 /.ipynb_checkpoints
 /.ipynb_checkpoints
 /build
+/src/ml_xslt.egg-info
